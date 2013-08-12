@@ -31,11 +31,9 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils.html import escapejs
 
+from freenasUI.api.resources import JailsResource, NullMountPointResource
 from freenasUI.freeadmin.site import site
 from freenasUI.freeadmin.options import BaseFreeAdmin
-from freenasUI.freeadmin.api.resources import (
-    JailsResource, NullMountPointResource
-)
 from freenasUI.jails import models
 
 log = logging.getLogger('jails.admin')
