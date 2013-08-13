@@ -31,7 +31,9 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.utils.html import escapejs
 
-from freenasUI.api.resources import JailsResource, NullMountPointResource
+from freenasUI.api.resources import (
+    JailsResourceMixin, NullMountPointResourceMixin
+)
 from freenasUI.freeadmin.site import site
 from freenasUI.freeadmin.options import BaseFreeAdmin
 from freenasUI.jails import models
@@ -48,7 +50,7 @@ class JailsFAdmin(BaseFreeAdmin):
     icon_add = u"ServicesIcon"
     icon_view = u"ServicesIcon"
 
-    resource = JailsResource
+    resource_mixin = JailsResourceMixin
     exclude_fields = (
         'id',
         'jail_ipv4',
@@ -149,10 +151,10 @@ class JailsFAdmin(BaseFreeAdmin):
                     %(func)s('%(label)s', data.%(url)s, [mybtn,]);
                 }
             }""" % {
-                'func': func,
-                'label': escapejs(label),
-                'url': url,
-                }
+            'func': func,
+            'label': escapejs(label),
+            'url': url,
+        }
 
         data = {
             'button_name': icon,
@@ -223,7 +225,7 @@ class NullMountPointFAdmin(BaseFreeAdmin):
     icon_add = u"AddMountPointIcon"
     icon_view = u"ViewMountPointIcon"
 
-    resource = NullMountPointResource
+    resource_mixin = NullMountPointResourceMixin
 
     def get_datagrid_columns(self):
         columns = super(NullMountPointFAdmin, self).get_datagrid_columns()
