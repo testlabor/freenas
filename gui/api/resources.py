@@ -287,13 +287,9 @@ class VolumeStatusResource(DojoModelResource):
 
     class Meta:
         allowed_methods = ['get']
-        authentication = APIAuthentication
-        authorization = APIAuthorization()
         filtering = {
             'id': ('exact', ),
         }
-        include_resource_uri = False
-        paginator_class = DojoPaginator
         queryset = Volume.objects.all()
         resource_name = 'storage/volumestatus'
 
@@ -758,11 +754,7 @@ class SnapshotResource(DojoResource):
 
     class Meta:
         allowed_methods = ['get']
-        authentication = APIAuthentication
-        authorization = APIAuthorization()
-        include_resource_uri = False
         object_class = zfs.Snapshot
-        paginator_class = DojoPaginator
         resource_name = 'storage/snapshot'
 
     def get_list(self, request, **kwargs):
@@ -843,12 +835,7 @@ class AvailablePluginsResource(DojoResource):
     version = fields.CharField(attribute='version')
 
     class Meta:
-        always_return_data = True
-        authentication = APIAuthentication
-        authorization = APIAuthorization()
-        include_resource_uri = False
         object_class = Plugin
-        paginator_class = DojoPaginator
         resource_name = 'plugins/available'
 
     def get_list(self, request, **kwargs):
