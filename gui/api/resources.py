@@ -35,7 +35,8 @@ from django.utils.translation import ugettext as _
 from freenasUI import choices
 from freenasUI.account.models import bsdUsers, bsdGroups
 from freenasUI.api.utils import (
-    DojoResource, DojoModelResource, DjangoAuthentication, DojoPaginator
+    APIAuthentication, APIAuthorization,
+    DojoResource, DojoModelResource, DojoPaginator
 )
 from freenasUI.middleware.notifier import notifier
 from freenasUI.middleware import zfs
@@ -285,15 +286,16 @@ class VolumeResourceMixin(object):
 class VolumeStatusResource(DojoModelResource):
 
     class Meta:
-        queryset = Volume.objects.all()
-        resource_name = 'volumestatus'
-        paginator_class = DojoPaginator
-        authentication = DjangoAuthentication()
-        include_resource_uri = False
         allowed_methods = ['get']
+        authentication = APIAuthentication
+        authorization = APIAuthorization()
         filtering = {
             'id': ('exact', ),
         }
+        include_resource_uri = False
+        paginator_class = DojoPaginator
+        queryset = Volume.objects.all()
+        resource_name = 'storage/volumestatus'
 
     def dehydrate(self, bundle):
         bundle = super(VolumeStatusResource, self).dehydrate(bundle)
@@ -755,11 +757,13 @@ class SnapshotResource(DojoResource):
     parent_type = fields.CharField(attribute='parent_type')
 
     class Meta:
-        resource_name = 'snapshot'
+        allowed_methods = ['get']
+        authentication = APIAuthentication
+        authorization = APIAuthorization()
         include_resource_uri = False
-        authentication = DjangoAuthentication()
         object_class = zfs.Snapshot
         paginator_class = DojoPaginator
+        resource_name = 'storage/snapshot'
 
     def get_list(self, request, **kwargs):
         snapshots = notifier().zfs_snapshot_list()
@@ -839,11 +843,13 @@ class AvailablePluginsResource(DojoResource):
     version = fields.CharField(attribute='version')
 
     class Meta:
-        resource_name = 'availableplugins'
+        always_return_data = True
+        authentication = APIAuthentication
+        authorization = APIAuthorization()
         include_resource_uri = False
-        authentication = DjangoAuthentication()
         object_class = Plugin
         paginator_class = DojoPaginator
+        resource_name = 'plugins/available'
 
     def get_list(self, request, **kwargs):
         conf = PluginConf.objects.latest('id')
