@@ -35,8 +35,7 @@ from django.utils.translation import ugettext as _
 from freenasUI import choices
 from freenasUI.account.models import bsdUsers, bsdGroups
 from freenasUI.api.utils import (
-    APIAuthentication, APIAuthorization,
-    DojoResource, DojoModelResource, DojoPaginator
+    DojoResource, DojoModelResource
 )
 from freenasUI.middleware.notifier import notifier
 from freenasUI.middleware import zfs
@@ -224,7 +223,6 @@ class VolumeResourceMixin(object):
                 bundle.obj.id,
             )
 
-
             if bundle.obj.vol_fstype == 'ZFS':
                 bundle.data['_scrub_url'] = reverse(
                     'storage_scrub',
@@ -279,7 +277,6 @@ class VolumeResourceMixin(object):
                     bundle.data['_change_passphrase_url'] = reverse(
                         'storage_volume_change_passphrase',
                         kwargs={'object_id': bundle.obj.id})
-
 
         attr_fields = ('total_si', 'avail_si', 'used_si', 'used_pct')
         for attr in attr_fields + ('status', ):
