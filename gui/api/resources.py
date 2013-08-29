@@ -38,9 +38,8 @@ from django.utils.translation import ugettext as _
 from freenasUI import choices
 from freenasUI.account.forms import bsdUserCreationForm, bsdUserPasswordForm
 from freenasUI.account.models import bsdUsers, bsdGroups
-from freenasUI.api.utils import (
-    DojoResource, DojoModelResource
-)
+from freenasUI.api.utils import DojoResource, DojoModelResource
+from freenasUI.jails.forms import JailCreateForm
 from freenasUI.middleware.notifier import notifier
 from freenasUI.middleware import zfs
 from freenasUI.plugins import availablePlugins, Plugin
@@ -1073,6 +1072,9 @@ class NullMountPointResourceMixin(object):
 
 class JailsResourceMixin(object):
 
+    class Meta:
+        validation = FormValidation(form_class=JailCreateForm)
+
     def dispatch_list(self, request, **kwargs):
         proc = subprocess.Popen(
             ["/usr/sbin/jls"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
@@ -1083,15 +1085,15 @@ class JailsResourceMixin(object):
     def dehydrate(self, bundle):
         bundle = super(JailsResourceMixin, self).dehydrate(bundle)
 
-        bundle.data['name'] = bundle.obj.jail_host
-        try:
-            reg = re.search(
-                r'\s*?(\d+).*?\b%s\b' % bundle.obj.jail_host,
-                self.__jls,
-            )
-            bundle.data['jid'] = int(reg.groups()[0])
-        except:
-            bundle.data['jid'] = None
+        if self.is_webclient(bundle.request):
+            try:
+                reg = re.search(
+                    r'\s*?(\d+).*?\b%s\b' % bundle.obj.jail_host,
+                    self.__jls,
+                )
+                bundle.data['jail_jid'] = int(reg.groups()[0])
+            except:
+                bundle.data['jail_jid'] = None
         if self.is_webclient(bundle.request):
             bundle.data['_edit_url'] = reverse('jail_edit', kwargs={
                 'id': bundle.obj.id
@@ -1116,6 +1118,12 @@ class JailsResourceMixin(object):
                 'id': bundle.obj.id
             })
 
+        return bundle
+
+    def hydrate(self, bundle):
+        bundle = super(JailsResourceMixin, self).hydrate(bundle)
+        if 'id' not in bundle.data:
+            bundle.data['id'] = 1
         return bundle
 
 
