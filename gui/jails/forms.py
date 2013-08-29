@@ -130,29 +130,11 @@ class JailCreateForm(ModelForm):
         initial=WARDEN_TYPE_STANDARD,
     )
 
-    jail_autostart = forms.BooleanField(
-        label=_("autostart"),
-        required=False,
-        initial=True
-    )
-
     jail_32bit = forms.BooleanField(
         label=_("32 bit"),
         required=False,
         initial=False
     )
-
-#    jail_source = forms.BooleanField(
-#        label=_("source"),
-#        required=False,
-#        initial=False
-#    )
-#
-#    jail_ports = forms.BooleanField(
-#        label=_("ports"),
-#        required=False,
-#        initial=False
-#    )
 
     jail_vanilla = forms.BooleanField(
         label=_("vanilla"),
@@ -160,37 +142,11 @@ class JailCreateForm(ModelForm):
         initial=True
     )
 
-#    jail_archive = forms.BooleanField(
-#        label=_("archive"),
-#        required=False,
-#        initial=False
-#    )
-
-    jail_vnet = forms.BooleanField(
-        label=_("VIMAGE"),
-        required=False,
-        initial=True
-    )
-
-    jail_nat = forms.BooleanField(
-        label=_("NAT"),
-        required=False,
-        initial=False
-    )
-
-#    jail_script = forms.CharField(
-#        label=_("script"),
-#        required=False
-#    )
-
     advanced_fields = [
         'jail_type',
         'jail_autostart',
         'jail_32bit',
-#        'jail_source',
-#        'jail_ports',
         'jail_vanilla',
-#        'jail_archive',
         'jail_ipv4',
         'jail_bridge_ipv4',
         'jail_defaultrouter_ipv4',
