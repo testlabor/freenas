@@ -219,10 +219,7 @@ class VolumeResourceMixin(object):
         return bundle, obj
 
     def replace_disk(self, request, **kwargs):
-        if request.method != 'POST':
-            response = HttpMethodNotAllowed('POST')
-            response['Allow'] = 'POST'
-            raise ImmediateHttpResponse(response=response)
+        self.method_check(request, allowed=['post'])
 
         bundle, obj = self._get_parent(request, kwargs)
 
@@ -247,10 +244,7 @@ class VolumeResourceMixin(object):
         return HttpResponse('Disk replacement started.')
 
     def offline_disk(self, request, **kwargs):
-        if request.method != 'POST':
-            response = HttpMethodNotAllowed('POST')
-            response['Allow'] = 'POST'
-            raise ImmediateHttpResponse(response=response)
+        self.method_check(request, allowed=['post'])
 
         bundle, obj = self._get_parent(request, kwargs)
 
