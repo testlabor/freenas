@@ -234,6 +234,7 @@ class VolumeResourceMixin(object):
         ]
 
     def _get_parent(self, request, kwargs):
+        self.is_authenticated(request)
         try:
             bundle = self.build_bundle(
                 data={'pk': kwargs['pk']}, request=request
