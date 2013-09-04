@@ -1606,10 +1606,17 @@ class ShutdownResource(DojoResource):
 class AdminPasswordResource(DojoResource):
 
     class Meta:
-        allowed_methods = ['post']
+        allowed_methods = ['put']
         resource_name = 'system/adminpassword'
+        object_class = object
 
-    def post_list(self, request, **kwargs):
+    def get_object_list(self, *args, **kwargs):
+        return []
+
+    def get_list(self, *args, **kwargs):
+        return []
+
+    def put_list(self, request, **kwargs):
         deserialized = self.deserialize(
             request,
             request.body,
@@ -1635,7 +1642,7 @@ class AdminUserResource(DojoResource):
     last_name = fields.CharField()
 
     class Meta:
-        allowed_methods = ['get', 'post']
+        allowed_methods = ['get', 'put']
         resource_name = 'system/adminuser'
         object_class = object
 
@@ -1654,7 +1661,7 @@ class AdminUserResource(DojoResource):
         response = self.create_response(request, to_be_serialized)
         return response
 
-    def post_list(self, request, **kwargs):
+    def put_list(self, request, **kwargs):
         deserialized = self.deserialize(
             request,
             request.body,
