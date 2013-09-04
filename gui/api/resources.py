@@ -1668,8 +1668,13 @@ class AdminUserResource(DojoResource):
             format=request.META.get('CONTENT_TYPE', 'application/json'),
         )
         user = User.objects.all()[0]
+        data = user.__dict__
+        data.update(deserialized)
         form = UserChangeForm(
-            instance=user, data=deserialized, api_validation=True
+            instance=user,
+            data=data,
+            api_validation=True,
+            initial=user.__dict__,
         )
         if not form.is_valid():
             raise ImmediateHttpResponse(
@@ -1678,4 +1683,6 @@ class AdminUserResource(DojoResource):
         else:
             form.save()
 
-        return self.get_list(request, **kwargs)
+        response = self.get_list(request, **kwargs)
+        response.status_code = 202
+        return response
