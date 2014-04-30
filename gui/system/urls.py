@@ -31,12 +31,13 @@ from freenasUI.system.forms import (
     FirmwareTemporaryLocationForm,
     FirmwareUploadForm,
     InitialWizard,
-    VolumeInitialWizardForm,
+    InitialWizardShareForm,
+    InitialWizardVolumeForm,
 )
 
 urlpatterns = patterns('freenasUI.system.views',
     url(r'^wizard/$', InitialWizard.as_view(
-        [VolumeInitialWizardForm, ]
+        [InitialWizardVolumeForm, InitialWizardShareForm]
     ), name='system_initialwizard'),
     url(r'^reboot/$', 'reboot', name="system_reboot"),
     url(r'^reboot/dialog/$', 'reboot_dialog', name="system_reboot_dialog"),
