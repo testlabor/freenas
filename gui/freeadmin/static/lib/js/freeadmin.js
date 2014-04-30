@@ -1693,7 +1693,7 @@ require([
             }
         });
         registry.byId("menupane").set('content', mytree);
-        editObject(gettext("Initial Wizard"), wizardUrl, []);
+        if(wizardUrl) editObject(gettext("Initial Wizard"), wizardUrl, []);
 
     });
 });
