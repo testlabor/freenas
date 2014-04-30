@@ -45,28 +45,40 @@ class CIFS_Share(Model):
     cifs_path = PathField(
             verbose_name=_("Path"))
     cifs_ro = models.BooleanField(
-            verbose_name=_("Export Read Only"))
+        verbose_name=_("Export Read Only"),
+        default=False,
+    )
     cifs_browsable = models.BooleanField(
             verbose_name=_("Browsable to Network Clients"), default=True)
     cifs_inheritowner = models.BooleanField(
             verbose_name=_("Inherit Owner"), default=False)
     cifs_inheritperms = models.BooleanField(
-            verbose_name=_("Inherit Permissions"))
+        verbose_name=_("Inherit Permissions"),
+        default=False,
+    )
     cifs_inheritacls = models.BooleanField(
             verbose_name=_("Inherit ACL's"), default=True)
     cifs_recyclebin = models.BooleanField(
-            verbose_name=_("Export Recycle Bin"))
+        verbose_name=_("Export Recycle Bin"),
+        default=False,
+    )
     cifs_showhiddenfiles = models.BooleanField(
-            verbose_name=_("Show Hidden Files"))
+        verbose_name=_("Show Hidden Files"),
+        default=False,
+    )
     cifs_guestok = models.BooleanField(
-            verbose_name=_("Allow Guest Access"),
-            help_text=_("If true then no password is required to connect to "
-                "the share. Privileges will be those of the guest account."))
+        verbose_name=_("Allow Guest Access"),
+        help_text=_("If true then no password is required to connect to "
+            "the share. Privileges will be those of the guest account."),
+        default=False,
+    )
     cifs_guestonly = models.BooleanField(
-            verbose_name=_("Only Allow Guest Access"),
-            help_text=_("If true then only guest connections to the share "
-                "are permitted. This parameter will have no effect if Allow "
-                "Guest Access is not set for the share."))
+        verbose_name=_("Only Allow Guest Access"),
+        help_text=_("If true then only guest connections to the share "
+            "are permitted. This parameter will have no effect if Allow "
+            "Guest Access is not set for the share."),
+        default=False,
+    )
     cifs_hostsallow = models.TextField(
             blank=True,
             verbose_name=_("Hosts Allow"),
@@ -135,9 +147,12 @@ class AFP_Share(Model):
             help_text=_("Allows certain users and groups to have read/write access to a share. This follows the allow option format.")
             )
     afp_timemachine = models.BooleanField(
-            verbose_name=_("Time Machine"),
-            help_text=_("Check this to enable Time Machine backups on this share.")
-            )
+        verbose_name=_("Time Machine"),
+        help_text=_(
+            "Check this to enable Time Machine backups on this share."
+        ),
+        default=False,
+    )
     afp_dbpath = models.CharField(
             max_length=120,
             verbose_name=_("Database Path"),
@@ -145,13 +160,18 @@ class AFP_Share(Model):
             help_text=_("Sets the database information to be stored in path. You have to specify a writable location, even if the volume is read only.")
             )
     afp_nodev = models.BooleanField(
-            verbose_name=_("Zero Device Numbers"),
-            help_text=_("Always use 0 for device number, helps when the device number is not constant across a reboot, cluster, ...")
-            )
+        verbose_name=_("Zero Device Numbers"),
+        help_text=_("Always use 0 for device number, helps when the device number is not constant across a reboot, cluster, ..."),
+        default=False,
+    )
     afp_nostat = models.BooleanField(
-            verbose_name=_("No Stat"),
-            help_text=_("Don't stat volume path when enumerating volumes list, useful for automounting or volumes created by a preexec script.")
-            )
+        verbose_name=_("No Stat"),
+        help_text=_(
+            "Don't stat volume path when enumerating volumes list, useful for "
+            "automounting or volumes created by a preexec script."
+        ),
+        default=False,
+    )
     afp_upriv = models.BooleanField(
             verbose_name=_("AFP3 Unix Privs"),
             default=True,
@@ -207,17 +227,26 @@ class NFS_Share(Model):
             blank=True,
             )
     nfs_alldirs = models.BooleanField(
-            verbose_name=_("All Directories"),
-            help_text=_("Allow mounting of any subdirectory under this mount point if selected. Otherwise, only the top level directory can be mounted."),
-            )
+        verbose_name=_("All Directories"),
+        help_text=_(
+            "Allow mounting of any subdirectory under this mount point if "
+            "selected. Otherwise, only the top level directory can be mounted."
+        ),
+        default=False,
+    )
     nfs_ro = models.BooleanField(
-            verbose_name=_("Read Only"),
-            help_text=_("Export the share read only. Writes are not permitted.")
-            )
+        verbose_name=_("Read Only"),
+        help_text=_("Export the share read only. Writes are not permitted."),
+        default=False,
+    )
     nfs_quiet = models.BooleanField(
-            verbose_name=_("Quiet"),
-            help_text=_("Inhibit syslog warnings if there are problems with exporting this share.")
-            )
+        verbose_name=_("Quiet"),
+        help_text=_(
+            "Inhibit syslog warnings if there are problems with exporting "
+            "this share."
+        ),
+        default=False,
+    )
     nfs_maproot_user = UserField(
             verbose_name=_("Maproot User"),
             max_length=120,
